@@ -1,7 +1,7 @@
-using Secrets.Appearance;
+using Anomalus.Appearance;
 using UnityEngine;
 
-namespace Secrets.Player
+namespace Anomalus.Player
 {
 	public class PlayerFlow : MonoBehaviour
 	{

@@ -1,9 +1,9 @@
-using Secrets.Player;
+using Anomalus.Player;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Secrets.Main
+namespace Anomalus.Main
 {
 	public class MainLifetimeScope : LifetimeScope
 	{

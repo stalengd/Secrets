@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Secrets.Appearance
+namespace Anomalus.Appearance
 {
 	public sealed class CharacterAnimationController : MonoBehaviour
 	{

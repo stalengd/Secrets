@@ -1,8 +1,8 @@
-﻿using Secrets.Player;
+﻿using Anomalus.Player;
 using VContainer;
 using VContainer.Unity;
 
-namespace Secrets.Main
+namespace Anomalus.Main
 {
     public sealed class MainFlow : IStartable
     {

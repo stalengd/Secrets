@@ -1,6 +1,6 @@
 using UnityEngine.SceneManagement;
 
-namespace Secrets.Infrastructure
+namespace Anomalus.Infrastructure
 {
     public sealed class SceneService
     {

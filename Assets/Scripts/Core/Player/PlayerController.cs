@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Secrets.Player
+namespace Anomalus.Player
 {
 	public sealed class PlayerController : MonoBehaviour
 	{

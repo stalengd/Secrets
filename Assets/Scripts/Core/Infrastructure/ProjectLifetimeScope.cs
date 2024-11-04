@@ -1,7 +1,7 @@
 using VContainer;
 using VContainer.Unity;
 
-namespace Secrets.Infrastructure
+namespace Anomalus.Infrastructure
 {
     public sealed class ProjectLifetimeScope : LifetimeScope
     {

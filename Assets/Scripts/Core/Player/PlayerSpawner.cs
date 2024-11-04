@@ -2,7 +2,7 @@
 using VContainer;
 using VContainer.Unity;
 
-namespace Secrets.Player
+namespace Anomalus.Player
 {
     public sealed class PlayerSpawner : MonoBehaviour
     {
