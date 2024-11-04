@@ -5,17 +5,16 @@ using VContainer.Unity;
 
 namespace Secrets.Main
 {
-    public class MainLifetimeScope : LifetimeScope
-    {
-        [Space]
-        [SerializeField] private PlayerSpawner _playerSpawner;
+	public class MainLifetimeScope : LifetimeScope
+	{
+		[Space]
+		[SerializeField] private PlayerSpawner _playerSpawner;
 
-        protected override void Configure(IContainerBuilder builder)
-        {
-            builder.RegisterEntryPoint<MainFlow>(Lifetime.Singleton);
+		protected override void Configure(IContainerBuilder builder)
+		{
+			builder.RegisterEntryPoint<MainFlow>(Lifetime.Singleton);
 
-            builder.RegisterComponent(_playerSpawner);
-
-        }
-    }
+			builder.RegisterComponent(_playerSpawner);
+		}
+	}
 }
