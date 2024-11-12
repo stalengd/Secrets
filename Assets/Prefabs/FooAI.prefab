@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6832712863421689732}
+  - component: {fileID: 5698744294292694944}
+  - component: {fileID: 5129586529372215862}
   m_Layer: 0
   m_Name: FooAI
   m_TagString: Untagged
@@ -32,6 +34,33 @@ Transform:
   - {fileID: 3648231931328137714}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5698744294292694944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3612510869069941246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cbf80385ca6bec1e8bb7296ddef25d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _aiAgent: {fileID: 5129586529372215862}
+  _waypointList: []
+--- !u!114 &5129586529372215862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3612510869069941246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3248b5fd4d07432cd99a323e325b0405, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movementSpeed: 5
 --- !u!1 &6617880824832120229
 GameObject:
   m_ObjectHideFlags: 0
