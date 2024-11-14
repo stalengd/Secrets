@@ -7,17 +7,17 @@ namespace Anomalus.Items
     {
         [SerializeField] private ItemConfig _itemType;
         [SerializeField] private int _count;
-        [SerializeField] private ItemExtraState _state;
+        [SerializeField] private ItemAttributes _attributes;
 
         public readonly ItemConfig ItemType => _itemType;
         public readonly int Count => _count;
-        public readonly ItemExtraState State => _state;
+        public readonly ItemAttributes Attributes => _attributes;
 
-        public ItemStack(ItemConfig itemType, int count, ItemExtraState state)
+        public ItemStack(ItemConfig itemType, int count, ItemAttributes attributes)
         {
             _itemType = itemType;
             _count = count;
-            _state = state;
+            _attributes = attributes;
         }
 
         public override readonly string ToString()
@@ -31,7 +31,7 @@ namespace Anomalus.Items
         //    {
         //        ["id"] = ItemType.Id, 
         //        ["count"] = Count, 
-        //        ["state"] = state.ToJson(), 
+        //        ["attributes"] = attributes.ToJson(), 
         //    };
         //}
 
@@ -40,12 +40,12 @@ namespace Anomalus.Items
         //    return new ItemStack(
         //        itemType: ItemConfig.Get(json["id"].Value<string>()), 
         //        count: json["count"].Value<int>(),
-        //        state: ItemExtraState.FromJson(json["state"])
+        //        attributes: ItemAttributes.FromJson(json["attributes"])
         //        );
         //}
     }
 
-    public struct ItemExtraState
+    public struct ItemAttributes
     {
         public double LastUseTime;
     }

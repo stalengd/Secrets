@@ -138,7 +138,7 @@ namespace Anomalus.Items
                 {
                     var canAddCount = currentItem.Item.MaxStack - currentItem.Count;
                     currentItem.Count += canAddCount;
-                    stack = new(stack.ItemType, stack.Count - canAddCount, stack.State);
+                    stack = new(stack.ItemType, stack.Count - canAddCount, stack.Attributes);
                     return (currentItem, stack);
                 }
             }
@@ -259,7 +259,7 @@ namespace Anomalus.Items
         public (ItemStack canAdd, ItemStack left) SplitStackToCanAdd(ItemStack stack, int? slot, Inventory from = null)
         {
             var canAddCount = CanAddItem(stack, slot, from);
-            return (new ItemStack(stack.ItemType, canAddCount, stack.State), new ItemStack(stack.ItemType, stack.Count - canAddCount, stack.State));
+            return (new ItemStack(stack.ItemType, canAddCount, stack.Attributes), new ItemStack(stack.ItemType, stack.Count - canAddCount, stack.Attributes));
         }
 
         public void SplitStackToCanAdd(ItemStack stack, Action<ItemStack> canAddAction, Action<ItemStack> leftAction)
@@ -299,9 +299,9 @@ namespace Anomalus.Items
                 }
             }
 
-            var stack = new ItemStack(item.Item, count ?? item.Count, item.State);
+            var stack = new ItemStack(item.Item, count ?? item.Count, item.Attributes);
 
-            stack = new ItemStack(item.Item, CanAddItem(stack, slot, from.Inventory), item.State);
+            stack = new ItemStack(item.Item, CanAddItem(stack, slot, from.Inventory), item.Attributes);
             if (stack.Count == 0)
                 return false;
 
@@ -391,9 +391,9 @@ namespace Anomalus.Items
                     Inventory.OnItemChanged.Invoke(this);
                 }
             }
-            public ItemExtraState State { get; set; }
+            public ItemAttributes Attributes { get; set; }
 
-            public ItemStack AsStack => new(Item, Count, State);
+            public ItemStack AsStack => new(Item, Count, Attributes);
 
             public bool IsRemoved { get; set; } = false;
             public bool IsEmpty
@@ -410,11 +410,11 @@ namespace Anomalus.Items
                 _count = count;
             }
 
-            public void SetState(ItemConfig item, int count, ItemExtraState state)
+            public void SetState(ItemConfig item, int count, ItemAttributes attributes)
             {
                 Item = item;
                 Count = count;
-                State = state;
+                Attributes = attributes;
             }
 
             public void SetEmpty()
