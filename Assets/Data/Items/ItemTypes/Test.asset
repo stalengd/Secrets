@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5d7d23e793933a47ac027eb303743a6, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: 
+  _specialization: {fileID: 0}
+  _sprite: {fileID: -247526573, guid: 81abe1e137969d241a5b731781242806, type: 3}
+  _name: TEST
+  _description: Test description
+  _mass: 1
+  _equipType: 0
+  _maxStack: -1
+  _sortingOrder: 0
+  _baseShopPrice: 1
+  _canBeSold: 0

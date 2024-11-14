@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -6816989476644599427}
   - component: {fileID: 1102096094974750603}
   - component: {fileID: 5484103887277142769}
+  - component: {fileID: 4586108930858443475}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -76,6 +77,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerController: {fileID: -6816989476644599427}
   _characterAnimationController: {fileID: 1102096094974750603}
+--- !u!114 &4586108930858443475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3615869885045874575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd0ccc98f1ca0f34eaeac1e73b27c428, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _radius: 1
+  _magnetizedItemsSpeed: 5
 --- !u!1 &3997200518539203766
 GameObject:
   m_ObjectHideFlags: 0

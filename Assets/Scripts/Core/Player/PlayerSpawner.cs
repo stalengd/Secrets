@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -10,9 +10,15 @@ namespace Anomalus.Player
 
         [Inject] private readonly IObjectResolver _resolver;
 
-        public void Spawn()
+        public GameObject Instance { get; private set; }
+
+        public GameObject Spawn()
         {
-            _resolver.Instantiate(_prefab, transform.position, Quaternion.identity);
+            if (Instance == null)
+            {
+                Instance = _resolver.Instantiate(_prefab, transform.position, Quaternion.identity);
+            }
+            return Instance;
         }
     }
 }
