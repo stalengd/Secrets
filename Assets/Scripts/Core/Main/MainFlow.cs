@@ -10,7 +10,6 @@ namespace Anomalus.Main
     public sealed class MainFlow : IStartable, ITickable
     {
         [Inject] private readonly PlayerSpawner _playerSpawner;
-        [Inject] private readonly AIFactory _aiFactory;
         [Inject] private readonly SpawnPresetCollection _spawnPresetCollection;
         [Inject] private readonly InventoryControl _inventoryControl;
         [Inject] private readonly IInventoryOwner _inventoryOwner;
@@ -20,10 +19,9 @@ namespace Anomalus.Main
         {
             InitializePlayer();
 
-            foreach (var spawnerPreset in _spawnPresetCollection.SpawnPresets)
-            {
-                _aiFactory.Create(spawnerPreset.Prefab, spawnerPreset.Position);
-            }
+            foreach (var spawnPreset in _spawnPresetCollection.SpawnPresets)
+                if (spawnPreset.SpawnOnStart)
+                    _spawnPresetCollection.Spawn(spawnPreset);
         }
 
         public void Tick()
