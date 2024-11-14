@@ -7,10 +7,6 @@ namespace Anomalus.AI
 	{
 		[SerializeField] private AIAgent _aiAgent;
 		/// <summary>
-		/// List, which is used to initialize the enumerator
-		/// </summary>
-		[SerializeField] private List<Waypoint> _waypointList;
-		/// <summary>
 		/// Enumerator, which stores the sequence of waypoints. Current holds the waypoint, which we are moving to or the one we are waiting at.
 		/// </summary>
 		private IEnumerator<Waypoint> _waypoints;
@@ -21,19 +17,6 @@ namespace Anomalus.AI
 		private void Start()
 		{
 			_aiAgent.AgentStopped += OnAgentStopped;
-			
-			_waypoints = _waypointList.GetEnumerator();
-			var nearestWaypoint = GetNearestWaypoint();
-			
-			while (_waypoints.MoveNext())
-			{
-				if (_waypoints.Current.Position != nearestWaypoint.Position)
-					continue;
-				
-				// This way we keep the position
-				MoveToCurrentWaypoint();
-				break;
-			}
 		}
 		
 		private void OnDestroy()
@@ -73,8 +56,24 @@ namespace Anomalus.AI
 			}
 
 			MoveToCurrentWaypoint();
-			_currentTimer = 0f;
-			_stopped = false;
+			ResetVariables();
+		}
+		
+		private void StartMovingOnPath()
+		{
+			// Reset variables just in case
+			ResetVariables();
+			
+			var nearestWaypoint = GetNearestWaypoint();
+			while (_waypoints.MoveNext())
+			{
+				if (_waypoints.Current.Position != nearestWaypoint.Position)
+					continue;
+				
+				// This way we keep the position
+				MoveToCurrentWaypoint();
+				break;
+			}
 		}
 		
 		private Waypoint GetNearestWaypoint()
@@ -97,6 +96,12 @@ namespace Anomalus.AI
 			return closestWaypoint ?? _waypoints.Current;
 		}
 		
+		private void ResetVariables()
+		{
+			_currentTimer = 0f;
+			_stopped = false;
+		}
+		
 		private void MoveToWaypoint(Waypoint waypoint) => _aiAgent.MoveTo(waypoint.Position);
 		
 		public void MoveToCurrentWaypoint() => MoveToWaypoint(_waypoints.Current);
@@ -105,8 +110,19 @@ namespace Anomalus.AI
 		{
 			_aiAgent.StopMovement();
 			// Reset those so we ain't breaking the system when we stop our movement at a waiting stop
-			_currentTimer = 0f;
-			_stopped = false;
+			ResetVariables();
+		}
+		
+		public bool TrySetPath(List<Waypoint> waypoints, bool startMoving)
+		{
+			if (waypoints.Count <= 1)
+				return false;
+			
+			_waypoints = waypoints.GetEnumerator();
+			if (startMoving)
+				StartMovingOnPath();
+			
+			return true;
 		}
 	}
 }
