@@ -1,6 +1,7 @@
 using Anomalus.AI;
 using Anomalus.Items.Owner;
 using Anomalus.Items.UI;
+using Anomalus.Pathfinding;
 using Anomalus.Player;
 using VContainer;
 using VContainer.Unity;
@@ -14,6 +15,7 @@ namespace Anomalus.Main
         [Inject] private readonly InventoryControl _inventoryControl;
         [Inject] private readonly IInventoryOwner _inventoryOwner;
         [Inject] private readonly InventoryScreen _inventoryScreen;
+        [Inject] private readonly Pathfinder _pathfinder;
 
         public void Start()
         {
@@ -22,11 +24,14 @@ namespace Anomalus.Main
             foreach (var spawnPreset in _spawnPresetCollection.SpawnPresets)
                 if (spawnPreset.SpawnOnStart)
                     _spawnPresetCollection.Spawn(spawnPreset);
+
+            _pathfinder.Map.GenerateMap();
         }
 
         public void Tick()
         {
             _inventoryControl.UpdateInput();
+            _pathfinder.Update();
         }
 
         public void InitializePlayer()
