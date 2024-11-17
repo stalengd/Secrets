@@ -3,6 +3,7 @@ using Anomalus.Items.Owner;
 using Anomalus.Items.UI;
 using Anomalus.Pathfinding;
 using Anomalus.Player;
+using Anomalus.Rendering;
 using VContainer;
 using VContainer.Unity;
 
@@ -16,6 +17,7 @@ namespace Anomalus.Main
         [Inject] private readonly IInventoryOwner _inventoryOwner;
         [Inject] private readonly InventoryScreen _inventoryScreen;
         [Inject] private readonly Pathfinder _pathfinder;
+        [Inject] private readonly CameraController _cameraController;
 
         public void Start()
         {
@@ -34,12 +36,13 @@ namespace Anomalus.Main
             _pathfinder.Update();
         }
 
-        public void InitializePlayer()
+        private void InitializePlayer()
         {
             _inventoryOwner.Initialize();
             _inventoryScreen.Initialize();
             var player = _playerSpawner.Spawn();
             _inventoryOwner.ItemsDropPoint = player.transform;
+            _cameraController.Track(player.transform);
         }
     }
 }

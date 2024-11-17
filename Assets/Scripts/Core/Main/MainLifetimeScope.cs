@@ -5,6 +5,7 @@ using Anomalus.Items.Ground;
 using Anomalus.Items.Owner;
 using Anomalus.Pathfinding;
 using Anomalus.Player;
+using Anomalus.Rendering;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -21,6 +22,7 @@ namespace Anomalus.Main
         [Space]
         [SerializeField] private SpawnPresetCollection _spawnPresetCollection;
         [SerializeField] private PathMap _pathMap;
+        [SerializeField] private CameraController _cameraController;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -39,6 +41,8 @@ namespace Anomalus.Main
 
             builder.RegisterComponent(_pathMap);
             builder.Register<Pathfinder>(Lifetime.Singleton);
+
+            builder.RegisterComponent(_cameraController);
 
             ConfigureItems(builder);
         }
