@@ -8,23 +8,49 @@ using VContainer;
 
 namespace Anomalus.Pathfinding
 {
+    public struct PathFindParameters
+    {
+        public bool CutCorners { get; set; }
+        public float MaxCost { get; set; }
+        public float MaxPriority { get; set; }
+
+        public static PathFindParameters Default { get; } = new()
+        {
+            CutCorners = false,
+            MaxCost = 50f,
+            MaxPriority = 60f,
+        };
+
+        public PathFindParameters WithCutCorners(bool cutCorners)
+        {
+            CutCorners = cutCorners;
+            return this;
+        }
+
+        public PathFindParameters WithMaxCost(float maxCost)
+        {
+            MaxCost = maxCost;
+            return this;
+        }
+
+        public PathFindParameters WithMaxPriority(float maxPriority)
+        {
+            MaxPriority = maxPriority;
+            return this;
+        }
+    }
+
     public sealed class Pathfinder : IDisposable
     {
         [Inject] private readonly PathMap _map;
 
         public PathMap Map => _map;
 
-        private static readonly float MaxCost = 50f;
-        private static readonly float MaxPriority = 60f;
+        private const float CostStraight = 1f;
+        private const float CostCorner = 1.41f;
+
         private static readonly FastPriorityQueue<Node> OpenNodesQueue = new(2048);
         private static readonly Dictionary<Vector2Int, Node> Nodes = new(2048);
-        private static readonly Vector2Int[] NeighbourOffsets = new Vector2Int[]
-        {
-            Vector2Int.up,
-            Vector2Int.down,
-            Vector2Int.right,
-            Vector2Int.left
-        };
         private static readonly Queue<PathfindingRequest> Requests = new();
         private static readonly List<PathfindingResult> Results = new();
         private static readonly List<PathfindingResult> ResultsBuffer = new();
@@ -69,16 +95,26 @@ namespace Anomalus.Pathfinding
             }
         }
 
-        public void FindPath(Vector2Int from, Vector2Int to, Action<Path> callback, List<Vector2Int> points = null)
+        public void FindPath(
+            Vector2Int from,
+            Vector2Int to,
+            Action<Path> callback,
+            PathFindParameters? parameters = default,
+            List<Vector2Int> points = null)
         {
-            EnqueuePathRequest(new PathfindingRequest(from, to, Map, callback, points ?? new()));
+            EnqueuePathRequest(new(from, to, Map, callback, points ?? new(), parameters ?? PathFindParameters.Default));
         }
 
-        public void FindPath(Vector3 from, Vector3 to, Action<Path> callback, List<Vector2Int> points = null)
+        public void FindPath(
+            Vector3 from,
+            Vector3 to,
+            Action<Path> callback,
+            PathFindParameters? parameters = default,
+            List<Vector2Int> points = null)
         {
             var fromPoint = (Vector2Int)Map.Grid.WorldToCell(from);
             var toPoint = (Vector2Int)Map.Grid.WorldToCell(to);
-            FindPath(fromPoint, toPoint, callback, points);
+            FindPath(fromPoint, toPoint, callback, parameters, points);
         }
 
         private static void EnqueuePathRequest(PathfindingRequest request)
@@ -148,7 +184,7 @@ namespace Anomalus.Pathfinding
             var map = request.Map;
             var startNode = Node.Get().Init(0f, _startPoint, default, true);
 
-            AddOpenNode(startNode);
+            AddOpenNode(startNode, 0);
 
             var shortestSqrDistance = float.PositiveInfinity;
             var nearestToEndNode = startNode;
@@ -170,14 +206,21 @@ namespace Anomalus.Pathfinding
 
                 MarkNodeAsExplored(node);
 
-                if (node.TotalCost >= MaxCost)
+                if (node.TotalCost >= request.Parameters.MaxCost)
                 {
                     continue;
                 }
 
-                foreach (var offset in NeighbourOffsets)
+                HandleNeighbour(node, Vector2Int.up, CostStraight, false, request);
+                HandleNeighbour(node, Vector2Int.right, CostStraight, false, request);
+                HandleNeighbour(node, Vector2Int.down, CostStraight, false, request);
+                HandleNeighbour(node, Vector2Int.left, CostStraight, false, request);
+                if (request.Parameters.CutCorners)
                 {
-                    HandleNeighbour(node, offset, map);
+                    HandleNeighbour(node, new Vector2Int(+1, +1), CostCorner, true, request);
+                    HandleNeighbour(node, new Vector2Int(+1, -1), CostCorner, true, request);
+                    HandleNeighbour(node, new Vector2Int(-1, -1), CostCorner, true, request);
+                    HandleNeighbour(node, new Vector2Int(-1, +1), CostCorner, true, request);
                 }
             }
 
@@ -193,7 +236,12 @@ namespace Anomalus.Pathfinding
 
         private static float CalculatePriority(Node node)
         {
-            return node.TotalCost + (_endPoint - node.Point).magnitude;
+            return CalculatePriority(node.TotalCost, (_endPoint - node.Point).magnitude);
+        }
+
+        private static float CalculatePriority(float cost, float distanceToEndPoint)
+        {
+            return cost + distanceToEndPoint;
         }
 
         private static Path BuildPath(Path path, Node endNode)
@@ -224,11 +272,17 @@ namespace Anomalus.Pathfinding
             node.IsOpen = false;
         }
 
-        private static void HandleNeighbour(Node currentNode, Vector2Int offset, PathMap map)
+        private static void HandleNeighbour(Node currentNode, Vector2Int offset, float cost, bool checkCornerMovable, PathfindingRequest request)
         {
             var point = currentNode.Point + offset;
 
-            if (!map.IsPointMovable(point))
+            if (!request.Map.IsPointMovable(point))
+            {
+                return;
+            }
+            if (checkCornerMovable
+                && (!request.Map.IsPointMovable(currentNode.Point + new Vector2Int(offset.x, 0))
+                || !request.Map.IsPointMovable(currentNode.Point + new Vector2Int(0, offset.y))))
             {
                 return;
             }
@@ -237,10 +291,9 @@ namespace Anomalus.Pathfinding
             {
                 if (!node.IsOpen) return;
 
-                var costToNode = currentNode.GetCostToNode(point);
-                if (currentNode.TotalCost + costToNode < node.TotalCost)
+                if (currentNode.TotalCost + cost < node.TotalCost)
                 {
-                    node.TotalCost = currentNode.TotalCost + costToNode;
+                    node.TotalCost = currentNode.TotalCost + cost;
                     node.PreviousPoint = currentNode.Point;
 
                     UpdateOpenNode(node);
@@ -248,17 +301,18 @@ namespace Anomalus.Pathfinding
             }
             else
             {
-                var costToNode = currentNode.GetCostToNode(point);
-                node = Node.Get().Init(currentNode.TotalCost + costToNode, point, currentNode.Point, true);
-                AddOpenNode(node);
+                var nodeTotalCost = currentNode.TotalCost + cost;
+                var priority = CalculatePriority(nodeTotalCost, (currentNode.Point - _endPoint).magnitude);
+                if (priority <= request.Parameters.MaxPriority)
+                {
+                    node = Node.Get().Init(nodeTotalCost, point, currentNode.Point, true);
+                    AddOpenNode(node, priority);
+                }
             }
         }
 
-        private static bool AddOpenNode(Node node)
+        private static bool AddOpenNode(Node node, float priority)
         {
-            var priority = CalculatePriority(node);
-            if (priority >= MaxPriority) return false;
-
             Nodes.Add(node.Point, node);
             OpenNodesQueue.Enqueue(node, priority);
             return true;
@@ -277,15 +331,22 @@ namespace Anomalus.Pathfinding
             public PathMap Map { get; }
             public Action<Path> Callback { get; }
             public List<Vector2Int> PointsBuffer { get; }
+            public PathFindParameters Parameters { get; }
 
-            public PathfindingRequest
-                (Vector2Int startPoint, Vector2Int endPoint, PathMap map, Action<Path> callback, List<Vector2Int> pointsBuffer)
+            public PathfindingRequest(
+                Vector2Int startPoint,
+                Vector2Int endPoint,
+                PathMap map,
+                Action<Path> callback,
+                List<Vector2Int> pointsBuffer,
+                PathFindParameters parameters)
             {
                 StartPoint = startPoint;
                 EndPoint = endPoint;
                 Map = map;
                 Callback = callback;
                 PointsBuffer = pointsBuffer;
+                Parameters = parameters;
             }
         }
 

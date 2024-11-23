@@ -30,7 +30,7 @@ namespace Anomalus.Pathfinding
                     {
                         Debug.DrawLine(worldPoints.ElementAt(i), worldPoints.ElementAt(i + 1), Color.green, 1f);
                     }
-                });
+                }, PathFindParameters.Default.WithCutCorners(true));
             }
         }
     }

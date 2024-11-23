@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1288187692872531677}
   - component: {fileID: 1946853394500506229}
   m_Layer: 0
-  m_Name: AISpawner
+  m_Name: ScientistSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -41,7 +41,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6970120062173713688}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94fc309e8e66b5e1fa379858892aced1, type: 3}
+  m_Script: {fileID: 11500000, guid: 99e09e0506009ee4d9794764395df2dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 0}
+  _prefab: {fileID: 3612510869069941246, guid: f591b0848b85703d4ab49bded10be115, type: 3}
+  _spawnOnStart: 1
+  _movementWaypoints: []

@@ -109,7 +109,8 @@ namespace Anomalus.AI
         private void FindPath(Vector2 destination)
         {
             _isPathfinding = true;
-            _pathfinder.FindPath(transform.position, destination, OnPathFound);
+            _pathfinder.FindPath
+                (transform.position, destination, OnPathFound, PathFindParameters.Default.WithCutCorners(true));
         }
 
         /// <summary>
