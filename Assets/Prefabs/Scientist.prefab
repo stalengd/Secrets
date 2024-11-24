@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _aiAgent: {fileID: 5129586529372215862}
   _waypointMovement: {fileID: 5698744294292694944}
+  _characterAnimationController: {fileID: 6610126435810150965}
 --- !u!114 &5698744294292694944
 MonoBehaviour:
   m_ObjectHideFlags: 0

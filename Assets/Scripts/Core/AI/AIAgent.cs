@@ -23,6 +23,7 @@ namespace Anomalus.AI
         [Inject] private readonly Pathfinder _pathfinder;
 
         public event Action AgentStartedMoving;
+        public event Action<Vector2> AgentMoved;
         public event Action AgentStopped;
 
         private void FixedUpdate()
@@ -71,6 +72,9 @@ namespace Anomalus.AI
             // Do the actual movement here
             var moveVector = heading.normalized * Time.deltaTime * _movementSpeed;
             transform.Translate(moveVector);
+
+            if (moveVector.magnitude > 0f)
+                AgentMoved?.Invoke(moveVector);
         }
 
         private Vector2 GetCurrentHeading()
