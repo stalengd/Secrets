@@ -17,6 +17,9 @@ namespace Anomalus.Scientists
         {
             foreach (var preset in _spawnPresetCollection.SpawnPresets)
             {
+                if (!preset.SpawnOnStart)
+                    continue;
+
                 SpawnFromPreset(preset);
             }
         }
