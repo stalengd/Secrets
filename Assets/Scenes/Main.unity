@@ -302,10 +302,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1607403556}
-  - {fileID: 1110315876}
   - {fileID: 2101743965}
   - {fileID: 918751513}
+  - {fileID: 1607403556}
+  - {fileID: 1110315876}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
@@ -6618,7 +6618,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6970120062173713688, guid: 8c1c384d451b0ca3981f1551a7e4f82a, type: 3}
       propertyPath: m_Name
-      value: ScientistSpawner (3)
+      value: ResearcherSpawner
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6717,6 +6717,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1946853394500506229, guid: 8c1c384d451b0ca3981f1551a7e4f82a, type: 3}
+      propertyPath: _prefab
+      value: 
+      objectReference: {fileID: 4404044636050433755, guid: 1c5f8161b2f76c640be69f7375e18a60, type: 3}
+    - target: {fileID: 1946853394500506229, guid: 8c1c384d451b0ca3981f1551a7e4f82a, type: 3}
       propertyPath: _movementWaypoints.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -6762,7 +6766,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6970120062173713688, guid: 8c1c384d451b0ca3981f1551a7e4f82a, type: 3}
       propertyPath: m_Name
-      value: ScientistSpawner (1)
+      value: SecuritySpawner
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27895,6 +27899,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1946853394500506229, guid: 8c1c384d451b0ca3981f1551a7e4f82a, type: 3}
+      propertyPath: _prefab
+      value: 
+      objectReference: {fileID: 4404044636050433755, guid: 1c5f8161b2f76c640be69f7375e18a60, type: 3}
+    - target: {fileID: 1946853394500506229, guid: 8c1c384d451b0ca3981f1551a7e4f82a, type: 3}
       propertyPath: _movementWaypoints.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -27940,7 +27948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6970120062173713688, guid: 8c1c384d451b0ca3981f1551a7e4f82a, type: 3}
       propertyPath: m_Name
-      value: ScientistSpawner
+      value: SecuritySpawner
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -28141,7 +28149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6970120062173713688, guid: 8c1c384d451b0ca3981f1551a7e4f82a, type: 3}
       propertyPath: m_Name
-      value: ScientistSpawner (2)
+      value: ResearcherSpawner
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
