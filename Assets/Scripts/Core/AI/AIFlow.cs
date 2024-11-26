@@ -15,7 +15,7 @@ namespace Anomalus.AI
             _aiAgent.AgentStopped += _waypointMovement.OnAgentStopped;
             _aiAgent.AgentStopped += _characterAnimationController.OnStoppedMovement;
             _aiAgent.AgentMoved += _characterAnimationController.OnMovement;
-            _characterAnimationController.SpriteFlipped += _aiVision.OnSpriteFlip;
+            _aiAgent.AgentMoved += _aiVision.OnMovement;
         }
 
         private void OnDestroy()
@@ -23,7 +23,7 @@ namespace Anomalus.AI
             _aiAgent.AgentStopped -= _waypointMovement.OnAgentStopped;
             _aiAgent.AgentStopped -= _characterAnimationController.OnStoppedMovement;
             _aiAgent.AgentMoved -= _characterAnimationController.OnMovement;
-            _characterAnimationController.SpriteFlipped -= _aiVision.OnSpriteFlip;
+            _aiAgent.AgentMoved -= _aiVision.OnMovement;
         }
 
     }
