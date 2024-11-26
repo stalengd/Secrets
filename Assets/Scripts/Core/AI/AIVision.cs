@@ -12,16 +12,12 @@ namespace Anomalus.AI
         [SerializeField] private float _viewRadius = 10f;
         [SerializeField] private ContactFilter2D _targetMask;
         [SerializeField] private LayerMask _obstructionMask;
+        private bool _isFacingRight = true; // we imagine that sprites look right by default
 
         /// <summary>
         /// Raised when this AI agent sees someone (something).
         /// </summary>
         public event Action<List<Collider2D>> OnAIVision;
-
-        private void Start()
-        {
-
-        }
 
         private void FixedUpdate()
         {
@@ -37,12 +33,13 @@ namespace Anomalus.AI
             var collidersInSight = new List<Collider2D>();
             foreach (var collider in colliders)
             {
-                var direction = (collider.transform.position - transform.position).normalized;
-                if (Vector2.Angle(transform.position, direction) < _viewAngle / 2f)
+                Vector2 targetDirection = (collider.transform.position - transform.position).normalized;
+                Vector2 facingDirection = _isFacingRight ? transform.right : -transform.right;
+                var angle = Vector2.Angle(facingDirection, targetDirection);
+                if (angle < _viewAngle / 2f)
                 {
                     var distance = Vector2.Distance(transform.position, collider.transform.position);
-                    var raycastHit = Physics2D.Raycast(transform.position, direction, distance, _obstructionMask);
-                    if (raycastHit)
+                    if (!Physics2D.Raycast(transform.position, targetDirection, distance, _obstructionMask))
                         collidersInSight.Add(collider);
                 }
             }
@@ -50,6 +47,11 @@ namespace Anomalus.AI
             Debug.Log(collidersInSight.Count());
             if (collidersInSight.Count() > 0)
                 OnAIVision?.Invoke(collidersInSight);
+        }
+
+        public void OnSpriteFlip(bool isFlipped)
+        {
+            _isFacingRight = !isFlipped;
         }
     }
 }

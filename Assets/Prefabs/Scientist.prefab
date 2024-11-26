@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _aiAgent: {fileID: 5129586529372215862}
+  _aiVision: {fileID: 2325958492526625708}
   _waypointMovement: {fileID: 5698744294292694944}
   _characterAnimationController: {fileID: 6610126435810150965}
 --- !u!114 &5698744294292694944
@@ -105,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 988c21dec069a24ecad571faba869a3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewAngle: 170
+  _viewAngle: 120
   _viewRadius: 10
   _targetMask:
     useTriggers: 0
@@ -123,7 +124,7 @@ MonoBehaviour:
     maxNormalAngle: 0
   _obstructionMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!58 &3246253120515975363
 CircleCollider2D:
   m_ObjectHideFlags: 0
